@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American History Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 10px;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .answers {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .answers li {
+            margin: 10px 0;
+        }
+
+        .result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #score {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .ad {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>American History Quiz</h1>
+        <div id="question-container">
+            <p class="question" id="question">Loading Question...</p>
+            <ul id="answer-container" class="answers">
+                <!-- Answer choices will appear here -->
+            </ul>
+        </div>
+
+        <div class="result" id="result"></div>
+        <div id="score">Score: 0</div>
+        <button id="next-button">Next Question</button>
+
+        <div class="ad">
+            <p>Ad Placeholder: You can insert your ad code here.</p>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Who was the first President of the United States?",
+                options: ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"],
+                answer: "George Washington",
+                explanation: "George Washington served as the first President of the United States from 1789 to 1797."
+            },
+            {
+                question: "In what year did the United States declare independence from Great Britain?",
+                options: ["1776", "1783", "1812", "1791"],
+                answer: "1776",
+                explanation: "The Declaration of Independence was signed on July 4, 1776."
+            },
+            // Add more questions here (up to 500)
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Load a new question
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById('question').innerText = currentQuestion.question;
+            const answerContainer = document.getElementById('answer-container');
+            answerContainer.innerHTML = '';
+
+            currentQuestion.options.forEach(option => {
+                const li = document.createElement('li');
+                li.innerHTML = `<button onclick="checkAnswer('${option}')">${option}</button>`;
+                answerContainer.appendChild(li);
+            });
+
+            document.getElementById('result').innerText = '';
+        }
+
+        // Check the selected answer
+        function checkAnswer(selectedAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const result = document.getElementById('result');
+
+            if (selectedAnswer === currentQuestion.answer) {
+                result.innerText = `Correct! ${currentQuestion.explanation}`;
+                score++;
+            } else {
+                result.innerText = `Wrong! ${currentQuestion.explanation}`;
+            }
+
+            document.getElementById('score').innerText = `Score: ${score}`;
+            document.getElementById('next-button').style.display = 'block';
+        }
+
+        // Go to the next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+                document.getElementById('next-button').style.display = 'none';
+            } else {
+                document.getElementById('quiz-container').innerHTML = `<h2>Quiz Complete! Your final score is ${score} out of ${questions.length}.</h2>`;
+            }
+        }
+
+        // Initialize the quiz
+        loadQuestion();
+        document.getElementById('next-button').addEventListener('click', nextQuestion);
+    </script>
+</body>
+</html>
